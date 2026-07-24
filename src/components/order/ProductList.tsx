@@ -52,10 +52,10 @@ export const ProductList = ({ products, onQuantitySelect, resetItem, isLoading =
           name: product.name,
           image: product.image || "",
           ref: product.reference,
-          sizes: product.sizes.map(size => ({
+          sizes: (product.sizes || []).map(size => ({
             label: size.size,
             price: size.value,
-            quantities: product.quantities.map(q => q.value)
+            quantities: (product.quantities || []).map(q => q.value)
           })),
           outOfStock: product.outOfStock
         };

@@ -65,10 +65,10 @@ const SelectQuantityProductList = ({ products, onQuantitySelect, resetItem, isLo
           name: product.name,
           image: product.image || "",
           ref: product.reference,
-          sizes: product.sizes.map(size => ({
+          sizes: (product.sizes || []).map(size => ({
             label: size.size,
             price: size.value,
-            quantities: product.quantities.map(q => q.value)
+            quantities: (product.quantities || []).map(q => q.value)
           })),
           isNew: product.isNew,
           outOfStock: product.outOfStock
