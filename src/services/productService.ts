@@ -21,8 +21,8 @@ export const fetchProducts = async (companyId: string): Promise<Product[]> => {
     reference: product.reference,
     name: product.name,
     image: product.image_url,
-    sizes: (product.sizes as Array<{size: string; value: number}>),
-    quantities: Array.isArray(product.quantities) 
+    sizes: Array.isArray(product.sizes) ? (product.sizes as Array<{size: string; value: number}>) : [],
+    quantities: Array.isArray(product.quantities)
       ? product.quantities.map(q => typeof q === 'number' ? { value: q } : q)
       : [],
     disabled: product.disabled,

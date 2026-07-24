@@ -96,11 +96,11 @@ export const ProductSelectionCard = ({ product, onQuantitySelect, resetItem }: P
                     <div key={qty} className="flex items-center gap-1">
                       <RadioGroupItem 
                         value={qty.toString()} 
-                        id={`${size.label}-${qty}-compact`}
+                        id={`${product.id}-${size.label}-${qty}-compact`}
                         className="scale-75"
                       />
-                      <Label 
-                        htmlFor={`${size.label}-${qty}-compact`} 
+                      <Label
+                        htmlFor={`${product.id}-${size.label}-${qty}-compact`}
                         className="text-xs"
                       >
                         {qty}

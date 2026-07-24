@@ -76,7 +76,7 @@ export const CompanyInfo = ({
                               <span>Calculando...</span>
                             </div>
                           ) : (
-                            formattedTotal
+                            <span>{formattedTotal}</span>
                           )}
                         </div>
                       </div>
