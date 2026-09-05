@@ -2,13 +2,97 @@
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Plus, Trash2 } from "lucide-react";
-import { UseFieldArrayReturn, UseFormReturn } from "react-hook-form";
+import { UseFieldArrayReturn, UseFormReturn, useWatch } from "react-hook-form";
 import { ProductFormData } from "@/types/product";
+import { isSizeAvailable } from "@/lib/availability";
 
 interface ProductSizesProps {
   form: UseFormReturn<ProductFormData>;
   sizeArray: UseFieldArrayReturn<ProductFormData, "sizes">;
+}
+
+interface SizeRowProps {
+  form: UseFormReturn<ProductFormData>;
+  index: number;
+  onRemove: () => void;
+}
+
+function SizeRow({ form, index, onRemove }: SizeRowProps) {
+  const available = useWatch({
+    control: form.control,
+    name: `sizes.${index}.available`,
+  });
+  const isAvailable = isSizeAvailable({ available });
+
+  return (
+    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-start border-b sm:border-b-0 pb-3 sm:pb-0">
+      <div className={`flex gap-4 flex-1 ${isAvailable ? "" : "opacity-60"}`}>
+        <FormField
+          control={form.control}
+          name={`sizes.${index}.size`}
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormControl>
+                <Input {...field} placeholder="Tamanho (P, M, G, etc)" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={`sizes.${index}.value`}
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormControl>
+                <Input
+                  {...field}
+                  type="number"
+                  step="0.01"
+                  placeholder="Valor"
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      <div className="flex items-center gap-3 sm:gap-4">
+        <FormField
+          control={form.control}
+          name={`sizes.${index}.available`}
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center gap-2 space-y-0 sm:w-[150px]">
+              <FormControl>
+                <Switch
+                  checked={isSizeAvailable({ available: field.value })}
+                  onCheckedChange={field.onChange}
+                  aria-label="Disponibilidade do tamanho"
+                />
+              </FormControl>
+              <FormLabel className="text-xs font-normal cursor-pointer whitespace-nowrap">
+                {isAvailable ? "Disponível" : "Entrega futura"}
+              </FormLabel>
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={onRemove}
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 export function ProductSizes({ form, sizeArray }: ProductSizesProps) {
@@ -22,7 +106,7 @@ export function ProductSizes({ form, sizeArray }: ProductSizesProps) {
           type="button"
           variant="default"
           size="sm"
-          onClick={() => append({ size: "", value: 0 })}
+          onClick={() => append({ size: "", value: 0, available: true })}
           className="bg-primary text-onPrimary hover:bg-primary/90"
         >
           <Plus className="mr-2 h-4 w-4" />
@@ -31,49 +115,12 @@ export function ProductSizes({ form, sizeArray }: ProductSizesProps) {
       </div>
 
       {fields.map((field, index) => (
-        <div key={field.id} className="flex gap-4 items-start">
-          <FormField
-            control={form.control}
-            name={`sizes.${index}.size`}
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormControl>
-                  <Input {...field} placeholder="Tamanho (P, M, G, etc)" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name={`sizes.${index}.value`}
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormControl>
-                  <Input 
-                    {...field} 
-                    type="number" 
-                    step="0.01"
-                    placeholder="Valor"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="mt-0.5"
-            onClick={() => remove(index)}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
+        <SizeRow
+          key={field.id}
+          form={form}
+          index={index}
+          onRemove={() => remove(index)}
+        />
       ))}
     </div>
   );

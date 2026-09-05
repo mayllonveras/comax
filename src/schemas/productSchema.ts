@@ -9,7 +9,10 @@ export const productFormSchema = z.object({
   sizes: z.array(
     z.object({
       size: z.string().min(1, "Tamanho não pode ficar vazio"),
+      // O valor continua obrigatório mesmo em tamanhos de entrega futura: é o preço
+      // que o cliente pagará quando o produto chegar.
       value: z.number().min(0.01, "Valor deve ser maior que zero"),
+      available: z.boolean().optional(),
     })
   ).min(1, "Adicione pelo menos um tamanho"),
   quantities: z.array(

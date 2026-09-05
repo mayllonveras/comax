@@ -15,6 +15,7 @@ interface OrderSummaryModalProps {
   onOpenChange: (open: boolean) => void;
   items: OrderItem[];
   total: number;
+  futureTotal?: number;
   notes: string;
   onNotesChange: (notes: string) => void;
   onSubmit: () => Promise<void>;
@@ -26,6 +27,7 @@ export const OrderSummaryModal = ({
   onOpenChange,
   items,
   total,
+  futureTotal = 0,
   notes,
   onNotesChange,
   onSubmit,
@@ -96,9 +98,10 @@ export const OrderSummaryModal = ({
 
           <div className="flex-1 overflow-hidden flex flex-col">
             <div className="flex-1 min-h-0 space-y-6">
-              <OrderSummaryTable 
-                items={items} 
-                total={total} 
+              <OrderSummaryTable
+                items={items}
+                total={total}
+                futureTotal={futureTotal}
                 onRemoveItem={handleRemoveItem}
                 removingItem={removingItem}
               />
