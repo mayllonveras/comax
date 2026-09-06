@@ -38,7 +38,7 @@ export function ProductForm({ onSubmit, initialData, onComplete }: ProductFormPr
       // normalizar aqui evita que o switch apareça desligado indevidamente.
       sizes: initialData?.sizes
         ? withNormalizedAvailability(initialData.sizes)
-        : [{ size: "", value: 0, available: true }],
+        : [{ size: "", value: undefined, available: true }],
       quantities: initialData?.quantities 
         ? initialData.quantities.map(q => typeof q === 'number' ? { value: q } : q)
         : [
