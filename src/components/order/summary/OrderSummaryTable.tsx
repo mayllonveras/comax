@@ -72,9 +72,9 @@ const OrderSection = ({
         <TableHeader>
           <TableRow>
             <TableHead className="hidden md:table-cell w-20">Ref.</TableHead>
-            <TableHead className="w-[250px] md:w-auto">Produto</TableHead>
+            <TableHead className="w-auto">Produto</TableHead>
             <TableHead className="w-auto">Tamanhos</TableHead>
-            <TableHead className="w-20 text-right whitespace-nowrap">Subtotal</TableHead>
+            <TableHead className="w-16 md:w-20 text-right whitespace-nowrap">Subtotal</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -84,8 +84,8 @@ const OrderSection = ({
             return (
               <TableRow key={item.productId}>
                 <TableCell className="hidden md:table-cell whitespace-nowrap text-sm">{item.reference}</TableCell>
-                <TableCell className="text-sm max-w-[250px] md:max-w-none break-words">{item.name}</TableCell>
-                <TableCell className="min-w-[120px]">
+                <TableCell className="text-xs md:text-sm break-words">{item.name}</TableCell>
+                <TableCell className="min-w-[100px] md:min-w-[120px]">
                   <div className="space-y-0">
                     {item.sizes.map((size, idx) => (
                       <div key={idx}>
@@ -152,8 +152,10 @@ export const OrderSummaryTable = ({
   const hasFutureItems = futureItems.length > 0;
 
   return (
-    <div className="w-full overflow-hidden flex flex-col">
-      <div className="w-full min-w-[300px] overflow-auto max-h-[40vh] pr-2 space-y-4">
+    <div className="w-full flex flex-col">
+      {/* A rolagem é do modal, não daqui: aninhar duas áreas roláveis cortava a
+          seção de entrega futura ao meio. */}
+      <div className="w-full space-y-4">
         {availableItems.length > 0 && (
           <OrderSection
             title="Disponíveis para entrega"

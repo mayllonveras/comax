@@ -119,18 +119,19 @@ export const ProductSelectionCard = ({ product, onQuantitySelect, resetItem }: P
                   onValueChange={(value) => {
                     handleQuantityChange(size.label, Number(value), size.price, available);
                   }}
-                  className="grid grid-cols-3 gap-2"
+                  className="flex flex-wrap gap-x-3 gap-y-2"
                 >
-                  {size.quantities.map((qty) => (
+                  {/* O 0 permite desmarcar o tamanho, como já acontece no modo select. */}
+                  {[0, ...size.quantities].map((qty) => (
                     <div key={qty} className="flex items-center gap-1">
-                      <RadioGroupItem 
-                        value={qty.toString()} 
+                      <RadioGroupItem
+                        value={qty.toString()}
                         id={`${product.id}-${size.label}-${qty}-compact`}
                         className="scale-75"
                       />
                       <Label
                         htmlFor={`${product.id}-${size.label}-${qty}-compact`}
-                        className="text-xs"
+                        className="text-xs cursor-pointer"
                       >
                         {qty}
                       </Label>

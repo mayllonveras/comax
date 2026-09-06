@@ -2,12 +2,18 @@ interface FutureDeliveryBadgeProps {
   className?: string;
 }
 
-/** Marca um tamanho que só será entregue quando o produto voltar a estar disponível. */
+/**
+ * Marca um tamanho que só será entregue quando o produto voltar a estar disponível.
+ *
+ * O rótulo quebra em duas linhas ("Entrega" / "futura"): numa coluna estreita, o texto
+ * em linha única alargaria a célula e empurraria as quantidades para outra linha.
+ */
 export const FutureDeliveryBadge = ({ className = "" }: FutureDeliveryBadgeProps) => (
   <span
-    className={`inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-800 ${className}`}
+    className={`inline-flex flex-col items-center rounded-lg bg-amber-100 px-1.5 md:px-2 py-0.5 text-[9px] md:text-[10px] font-medium uppercase leading-tight tracking-wide text-amber-800 ${className}`}
   >
-    Entrega futura
+    <span>Entrega</span>
+    <span>futura</span>
   </span>
 );
 
